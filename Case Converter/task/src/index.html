@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+</head>
+<body>
+<div>
+    <h1 class="title">Case Converter</h1>
+</div>
+<textarea id="my-text"></textarea>
+<button id="upper-case" name="Upper Case">Upper Case</button>
+<button id="lower-case" name="Lower Case" >Lower Case</button>
+<button id="proper-case" name="Proper Case">Proper Case</button>
+<button id="sentence-case" name="Sentence Case">Sentence Case</button>
+<button id="save-text-file">Save Text File</button>
+
+<script>
+    const textArea = document.querySelector('#my-text');
+
+    function download(filename, text) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    // Start file download.
+    //download("hello.txt","This is the content of my file :)");
+    const saveFile = document.querySelector('#save-text-file');
+    saveFile.addEventListener('click', function (){
+        let text = textArea.value;
+        download('text.txt', text);
+    })
+
+
+
+
+    const lowerCase = document.querySelector('#lower-case');
+    lowerCase.addEventListener('click', function (){
+        textArea.value = textArea.value.toLowerCase();
+        return textArea.value;
+    });
+    const upperCase = document.querySelector('#upper-case');
+    upperCase.addEventListener('click', function (){
+        textArea.value = textArea.value.toUpperCase();
+        return textArea.value;
+
+    })
+    const sentenceCase = document.querySelector('#sentence-case');
+    sentenceCase.addEventListener('click', function (){
+        textArea.value = textArea.value.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, function (c) {
+            return c.toUpperCase();
+        });
+    });
+    const properCase = document.querySelector('#proper-case');
+
+    properCase.addEventListener('click', function (){
+
+        function toProperCase(text) {
+            return text.toLowerCase().replace(/(^\w|\s\w)/g      , function (char) {
+                return char.toUpperCase();
+            });
+        }
+        let originalText = textArea.value;
+        textArea.value = toProperCase(originalText);
+    })
+
+</script>
+</body>
+</html>
